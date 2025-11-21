@@ -5,18 +5,22 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.openclassrooms.arista.domain.model.ExerciseCategory
-import java.time.LocalDateTime
 
 @Entity(
     tableName = "exercise",
+
+    /**
+     *
     foreignKeys = [
-        ForeignKey(
-            entity = UserDto::class,
-            parentColumns = ["id"],
-            childColumns = ["user_id"],
-            onDelete = ForeignKey.CASCADE
-        )
+    ForeignKey(
+    entity = UserDto::class,
+    parentColumns = ["id"],
+    childColumns = ["user_id"],
+    onDelete = ForeignKey.CASCADE
+    )
     ]
+     */
+
 )
 data class ExerciseDto(
     @PrimaryKey(autoGenerate = true)
@@ -24,7 +28,7 @@ data class ExerciseDto(
     val id: Long = 0,
 
     @ColumnInfo(name = "start_time")
-    var startTime: LocalDateTime,
+    var startTime: Long,
 
     @ColumnInfo(name = "duration")
     var duration: Int,
@@ -35,6 +39,6 @@ data class ExerciseDto(
     @ColumnInfo(name = "intensity")
     var intensity: Int,
 
-    @ColumnInfo(name = "user_id")
-    val userId: Long,
+    //@ColumnInfo(name = "user_id")
+    //val userId: Long,
 )

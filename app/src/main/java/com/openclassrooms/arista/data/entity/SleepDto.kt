@@ -8,22 +8,27 @@ import java.time.LocalDateTime
 
 @Entity(
     tableName = "sleep",
-    foreignKeys = [
-        ForeignKey(
-            entity = UserDto::class,
-            parentColumns = ["id"],
-            childColumns = ["user_id"],
-            onDelete = ForeignKey.CASCADE,
-        )
-    ]
+    /**
+     *
+     foreignKeys = [
+             ForeignKey(
+                 entity = UserDto::class,
+                 parentColumns = ["id"],
+                 childColumns = ["user_id"],
+                onDelete = ForeignKey.CASCADE,
+             )
+     ]
+     */
+
 )
 data class SleepDto(
-    @PrimaryKey
-    @ColumnInfo(name = "id")
-    val id: Long = 0,
 
+    //@ColumnInfo(name = "id")
+    //val id: Long = 0,
+
+    @PrimaryKey
     @ColumnInfo(name = "start_time")
-    var startTime: LocalDateTime,
+    var startTime: Long,
 
     @ColumnInfo(name = "duration")
     var duration: Int,
@@ -31,6 +36,6 @@ data class SleepDto(
     @ColumnInfo(name = "quality")
     var quality: Int,
 
-    @ColumnInfo(name = "user_id")
-    val userId: Long,
+    //@ColumnInfo(name = "user_id")
+    //val userId: Long,
 )
