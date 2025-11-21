@@ -18,7 +18,7 @@ import java.time.LocalDateTime
         )
     ]
 )
-data class ExerciceDto(
+data class ExerciseDto(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     val id: Long = 0,
