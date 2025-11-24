@@ -28,7 +28,7 @@ data class SleepDto(
 
     @PrimaryKey
     @ColumnInfo(name = "start_time")
-    var startTime: Long,
+    var startTime: LocalDateTime,
 
     @ColumnInfo(name = "duration")
     var duration: Int,
