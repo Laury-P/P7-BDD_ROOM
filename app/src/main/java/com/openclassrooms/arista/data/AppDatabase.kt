@@ -4,7 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.openclassrooms.arista.data.converter.ExerciseCategoryConverter
+import com.openclassrooms.arista.data.converter.LocalDateTimeConverter
 import com.openclassrooms.arista.data.dao.ExerciseDtoDao
 import com.openclassrooms.arista.data.dao.SleepDtoDao
 import com.openclassrooms.arista.data.dao.UserDtoDao
@@ -20,6 +23,10 @@ import java.time.ZoneOffset
     entities = [UserDto::class, SleepDto::class, ExerciseDto::class],
     version = 1,
     exportSchema = false,)
+@TypeConverters(
+    LocalDateTimeConverter::class,
+    ExerciseCategoryConverter::class
+)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDtoDao
     abstract fun sleepDao(): SleepDtoDao
