@@ -64,14 +64,14 @@ abstract class AppDatabase : RoomDatabase() {
         suspend fun populateDatabase(userDao: UserDtoDao, sleepDao: SleepDtoDao) {
             sleepDao.insertSleep(
                 SleepDto(
-                    startTime = LocalDateTime.now().minusDays(1).atZone(ZoneOffset.UTC).toInstant().toEpochMilli(),
+                    startTime = LocalDateTime.now().minusDays(1),
                     duration = 480,
                     quality = 4
                 )
             )
             sleepDao.insertSleep(
                 SleepDto(
-                    startTime = LocalDateTime.now().minusDays(2).atZone(ZoneOffset.UTC).toInstant().toEpochMilli(),
+                    startTime = LocalDateTime.now().minusDays(2),
                     duration = 450,
                     quality = 3
                 )
@@ -81,7 +81,6 @@ abstract class AppDatabase : RoomDatabase() {
                 UserDto(
                     name = "John Doe",
                     email ="john.doe@exemple.com",
-                    password = "1234"
                 )
             )
         }
