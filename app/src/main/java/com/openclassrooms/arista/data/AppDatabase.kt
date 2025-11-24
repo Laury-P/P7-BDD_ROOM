@@ -17,7 +17,6 @@ import com.openclassrooms.arista.data.entity.UserDto
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 @Database(
     entities = [UserDto::class, SleepDto::class, ExerciseDto::class],
@@ -49,7 +48,7 @@ abstract class AppDatabase : RoomDatabase() {
         private var INSTANCE: AppDatabase? = null
         const val DATABASE_NAME = "AristaDB"
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context, scope: CoroutineScope): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
