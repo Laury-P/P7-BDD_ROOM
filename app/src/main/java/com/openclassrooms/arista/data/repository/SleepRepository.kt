@@ -9,9 +9,14 @@ import kotlinx.coroutines.flow.first
 class SleepRepository(private val sleepDao: SleepDtoDao) {
 
     // Get all sleep records
-    suspend fun allSleeps(): List<Sleep>{
-        return sleepDao.getAllSleep()
-            .first()
-            .map { SleepMapper.fromDto(it) }
+    suspend fun allSleeps(): Result<List<Sleep>> {
+        return try {
+            val sleeps = sleepDao.getAllSleep()
+                .first()
+                .map { SleepMapper.fromDto(it) }
+            Result.success(sleeps)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

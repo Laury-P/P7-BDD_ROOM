@@ -20,10 +20,19 @@ class SleepViewModel @Inject constructor(private val getAllSleepsUseCase: GetAll
     private val _sleeps = MutableStateFlow<List<Sleep>>(emptyList())
     val sleeps: StateFlow<List<Sleep>> = _sleeps.asStateFlow()
 
+    private val _errorFlow = MutableStateFlow<String?>(null)
+    val errorFlow: StateFlow<String?> = _errorFlow.asStateFlow()
+
+
     fun fetchSleeps() {
         viewModelScope.launch(Dispatchers.IO) {
             val sleepList = getAllSleepsUseCase.execute()
-            _sleeps.value = sleepList
+
+            sleepList.onSuccess { _sleeps.value = it }
+
+            sleepList.onFailure { e ->
+                _errorFlow.value = e.message ?: "Erreur inconnu lors du chargement."
+            }
         }
     }
 

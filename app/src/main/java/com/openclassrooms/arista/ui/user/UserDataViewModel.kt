@@ -18,6 +18,10 @@ class UserDataViewModel @Inject constructor(private val getUserUsecase: GetUserU
     private val _userFlow = MutableStateFlow<User?>(null)
     val userFlow: StateFlow<User?> = _userFlow.asStateFlow()
 
+    private val _errorFlow = MutableStateFlow<String?>(null)
+    val errorFlow: StateFlow<String?> = _errorFlow.asStateFlow()
+
+
     init {
         loadUserData()
     }
@@ -25,7 +29,13 @@ class UserDataViewModel @Inject constructor(private val getUserUsecase: GetUserU
     private fun loadUserData() {
         viewModelScope.launch(Dispatchers.IO) {
             val user = getUserUsecase.execute()
-            _userFlow.value = user
+
+            user.onSuccess { _userFlow.value = it }
+
+            user.onFailure { e ->
+                _errorFlow.value = e.message ?: "Erreur inconnu lors du chargement."
+            }
+
         }
     }
 }

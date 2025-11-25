@@ -9,12 +9,22 @@ import kotlinx.coroutines.flow.first
 class UserRepository(private val userDao: UserDtoDao) {
 
     // Get the current user
-    suspend fun getUser(): User{
-        return UserMapper.fromDto(userDao.getUser())
+    suspend fun getUser(): Result<User>{
+        return try{
+            val result = UserMapper.fromDto(userDao.getUser())
+            Result.success(result)
+        } catch (e: Exception){
+            Result.failure(e)
+        }
     }
 
-    suspend fun insertUser(user: User): Long {
-        return userDao.insertUser(UserMapper.toDto(user))
+    suspend fun insertUser(user: User): Result<Long> {
+        return try{
+            val result = userDao.insertUser(UserMapper.toDto(user))
+            Result.success(result)
+        } catch (e: Exception){
+            Result.failure(e)
+        }
     }
 
 }

@@ -5,7 +5,7 @@ import com.openclassrooms.arista.domain.model.Sleep
 import javax.inject.Inject
 
 class GetAllSleepsUseCase @Inject constructor(private val sleepRepository: SleepRepository) {
-    suspend fun execute(): List<Sleep> {
+    suspend fun execute(): Result<List<Sleep>> {
         return sleepRepository.allSleeps()
     }
 }
