@@ -43,22 +43,4 @@ class AppModule {
     @Provides
     @Singleton
     fun provideExerciseDao(appDatabase: AppDatabase) = appDatabase.exerciseDao()
-
-    @Provides
-    @Singleton
-    fun provideUserRepository(userDao: UserDtoDao): UserRepository {
-        return UserRepository(userDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideSleepRepository(sleepDao: SleepDtoDao): SleepRepository {
-        return SleepRepository(sleepDao)
-    }
-
-    @Provides
-    @Singleton
-    fun provideExerciseRepository(exerciseDao: ExerciseDtoDao): ExerciseRepository {
-        return ExerciseRepository(exerciseDao)
-    }
 }

@@ -4,43 +4,27 @@ package com.openclassrooms.arista.data.repository
 import com.openclassrooms.arista.data.dao.ExerciseDtoDao
 import com.openclassrooms.arista.data.mapper.ExerciseMapper
 import com.openclassrooms.arista.domain.model.Exercise
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class ExerciseRepository(private val exerciseDao: ExerciseDtoDao) {
+class ExerciseRepository @Inject constructor(private val exerciseDao: ExerciseDtoDao) {
 
     // Get all exercises
-    suspend fun getAllExercises(): Result<List<Exercise>> {
-        return try {
-            val exercises = exerciseDao.getAllExercises()
-                .first()
-                .map { ExerciseMapper.fromDto(it) }
-            Result.success(exercises)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    fun getAllExercises(): Flow<List<Exercise>> {
+        return exerciseDao.getAllExercises()
+            .map { list -> list.map { ExerciseMapper.fromDto(it) } }
     }
 
     // Add a new exercise
-    suspend fun addExercise (exercise: Exercise): Result<Boolean> {
-        return try {
-            exerciseDao.insertExercise(ExerciseMapper.toDto(exercise))
-            Result.success(true)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+    suspend fun addExercise (exercise: Exercise) {
+        exerciseDao.insertExercise(ExerciseMapper.toDto(exercise))
     }
 
     // Delete an exercise
-    suspend fun deleteExercise (exercise: Exercise): Result<Boolean> {
+    suspend fun deleteExercise (exercise: Exercise) {
         // If there is no id, you can raise an exception and catch it in the use case and view model
-        return try {
-            exercise.id?.let {
-                exerciseDao.deleteExerciseById(it)
-                return Result.success(true)
-            }
-            Result.failure(IllegalArgumentException("Exercise id is null"))
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
+        return exerciseDao.deleteExerciseById(exercise.id ?: 0)
     }
 }
