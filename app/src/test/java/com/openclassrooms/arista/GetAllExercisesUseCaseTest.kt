@@ -18,8 +18,6 @@ import java.time.LocalDateTime
 @RunWith(JUnit4::class)
 class GetAllExercisesUseCaseTest {
 
-
-
     private lateinit var exerciseRepository: ExerciseRepository
     private lateinit var getAllExercisesUseCase: GetAllExercisesUseCase
 
@@ -31,14 +29,10 @@ class GetAllExercisesUseCaseTest {
     }
 
 
-
-
     @After
     fun tearDown() {
         clearAllMocks()
     }
-
-
 
 
     @Test
