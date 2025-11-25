@@ -20,8 +20,12 @@ class ExerciseViewModel @Inject constructor(
     private val addNewExerciseUseCase: AddNewExerciseUseCase,
     private val deleteExerciseUseCase: DeleteExerciseUseCase
 ) : ViewModel() {
+
     private val _exercisesFlow = MutableStateFlow<List<Exercise>>(emptyList())
     val exercisesFlow: StateFlow<List<Exercise>> = _exercisesFlow.asStateFlow()
+
+    private val _errorFlow = MutableStateFlow<String?>(null)
+    val errorFlow: StateFlow<String?> = _errorFlow.asStateFlow()
 
     init {
         loadAllExercises()
@@ -29,8 +33,13 @@ class ExerciseViewModel @Inject constructor(
 
     fun deleteExercise(exercise: Exercise) {
         viewModelScope.launch(Dispatchers.IO) {
-            deleteExerciseUseCase.execute(exercise)
-            loadAllExercises()
+            val result = deleteExerciseUseCase.execute(exercise)
+
+            result.onSuccess { loadAllExercises() }
+
+            result.onFailure { e ->
+                _errorFlow.value = e.message ?: "Erreur inconnu lors de la suppression."
+            }
         }
 
     }
@@ -38,14 +47,25 @@ class ExerciseViewModel @Inject constructor(
     private fun loadAllExercises() {
         viewModelScope.launch(Dispatchers.IO) {
             val exercises = getAllExercisesUseCase.execute()
-            _exercisesFlow.value = exercises
+
+            exercises.onSuccess { _exercisesFlow.value = it }
+
+            exercises.onFailure { e ->
+                _errorFlow.value = e.message ?: "Erreur inconnu lors du chargement."
+            }
         }
     }
 
     fun addNewExercise(exercise: Exercise) {
         viewModelScope.launch(Dispatchers.IO) {
-            addNewExerciseUseCase.execute(exercise)
-            loadAllExercises()
+            val result = addNewExerciseUseCase.execute(exercise)
+
+            result.onSuccess { loadAllExercises() }
+
+            result.onFailure { e ->
+                _errorFlow.value = e.message ?: "Erreur inconnu lors de l'ajout."
+            }
+
         }
     }
 }

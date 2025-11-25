@@ -5,7 +5,7 @@ import com.openclassrooms.arista.domain.model.Exercise
 import javax.inject.Inject
 
 class DeleteExerciseUseCase @Inject constructor(private val exerciseRepository: ExerciseRepository) {
-    suspend fun execute(exercise: Exercise) {
-        exerciseRepository.deleteExercise(exercise)
+    suspend fun execute(exercise: Exercise): Result<Boolean> {
+        return exerciseRepository.deleteExercise(exercise)
     }
 }

@@ -62,6 +62,14 @@ class ExerciseFragment : Fragment(), DeleteExerciseInterface {
                 exerciseAdapter.submitList(exercises)
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.errorFlow.collect { error ->
+                error?.let {
+                    Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     private fun setupFab() {
