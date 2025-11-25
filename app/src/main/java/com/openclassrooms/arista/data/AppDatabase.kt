@@ -54,7 +54,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     DATABASE_NAME
-                ).build()
+                )
+                    .addCallback(AppDatabaseCallback(scope))
+                    .build()
                 INSTANCE = instance
                 instance
             }
